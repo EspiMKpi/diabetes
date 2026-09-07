@@ -13,15 +13,20 @@ FEATURES = [
     "Pregnancies", "Glucose", "BloodPressure", "SkinThickness",
     "Insulin", "BMI", "DiabetesPedigreeFunction", "Age"
 ]
+FIELD_LABELS = {
+    "BloodPressure": "Blood Pressure",
+    "SkinThickness": "Skin Thickness",
+    "DiabetesPedigreeFunction": "Diabetes Pedigree Function",
+}
 
 PAGE = """<!doctype html>
 <title>Diabetes Prediction</title>
 <h1>Diabetes Prediction</h1>
 <form method="post">
-{% for feature in features %}<label>{{ feature }}<br><input name="{{ feature }}" type="number" step="any" required></label><br><br>{% endfor %}
+{% for feature in features %}<label>{{ labels.get(feature, feature) }}<br><input name="{{ feature }}" type="number" step="any" value="{{ values.get(feature, '') }}" required></label><br><br>{% endfor %}
 <button type="submit">Predict</button>
 </form>
-{% if result %}<h2>{{ result }}</h2>{% endif %}
+{% if result %}<h2>{{ result }}{% if confidence is not none %} (Prediction confidence: {{ confidence }}%){% endif %}</h2>{% endif %}
 <p>For research and education only. This is not medical advice.</p>
 """
 
@@ -39,12 +44,24 @@ def predict(payload):
 @app.route("/", methods=["GET", "POST"])
 def home():
     result = None
+    confidence = None
+    values = request.form.to_dict() if request.method == "POST" else {}
     if request.method == "POST":
         try:
-            result = predict(request.form)["label"]
+            prediction = predict(request.form)
+            result = prediction["label"].capitalize()
+            if "confidence" in prediction:
+                confidence = round(prediction["confidence"] * 100, 2)
         except (KeyError, TypeError, ValueError):
             result = "Please enter valid values for every field."
-    return render_template_string(PAGE, features=FEATURES, result=result)
+    return render_template_string(
+        PAGE,
+        features=FEATURES,
+        labels=FIELD_LABELS,
+        values=values,
+        result=result,
+        confidence=confidence,
+    )
 
 
 @app.post("/predict")
