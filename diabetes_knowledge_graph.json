@@ -1,0 +1,109 @@
+{
+  "name": "Diabetes knowledge graph based on Long Chau public pages",
+  "version": "1.0",
+  "language": "en",
+  "purpose": "Educational information retrieval and graph representation; not a medical recommendation system.",
+  "sources": [
+    {
+      "id": "lc_diabetes_overview",
+      "title": "Dai thao duong: Trieu chung, nguyen nhan, chan doan va dieu tri",
+      "url": "https://nhathuoclongchau.com.vn/benh/benh-tieu-duong-289.html"
+    },
+    {
+      "id": "lc_type2_diabetes",
+      "title": "Tieu duong tuyp 2 la gi? Nguyen nhan, trieu chung va dieu tri",
+      "url": "https://nhathuoclongchau.com.vn/benh/tieu-duong-tuyp-2.html"
+    },
+    {
+      "id": "lc_treatment",
+      "title": "Huong dan cach dieu tri benh tieu duong dat hieu qua cao",
+      "url": "https://nhathuoclongchau.com.vn/bai-viet/huong-dan-cach-dieu-tri-benh-tieu-duong.html"
+    },
+    {
+      "id": "lc_complications",
+      "title": "Nguyen nhan tieu duong va cac bien chung khong nen bo qua",
+      "url": "https://nhathuoclongchau.com.vn/bai-viet/nguyen-nhan-tieu-duong-va-cac-bien-chung-can-luu-y.html"
+    },
+    {
+      "id": "lc_medicines",
+      "title": "Top 11+ thuoc tri tieu duong, thuoc tieu duong gia tot",
+      "url": "https://nhathuoclongchau.com.vn/thuoc/thuoc-tri-tieu-duong"
+    }
+  ],
+  "nodes": [
+    {"id": "diabetes", "label": "Diabetes", "type": "disease"},
+    {"id": "type2_diabetes", "label": "Type 2 diabetes", "type": "disease_subtype"},
+    {"id": "symptoms", "label": "Symptoms", "type": "clinical_concept"},
+    {"id": "causes_risk_factors", "label": "Causes and risk factors", "type": "clinical_concept"},
+    {"id": "diagnosis", "label": "Diagnosis", "type": "clinical_concept"},
+    {"id": "treatment", "label": "Treatment", "type": "clinical_concept"},
+    {"id": "complications", "label": "Complications", "type": "clinical_concept"},
+    {"id": "diabetes_medicines", "label": "Diabetes medicines", "type": "product_category"},
+    {"id": "long_chau", "label": "Long Chau Pharmacy", "type": "organization"}
+  ],
+  "edges": [
+    {
+      "source": "diabetes",
+      "relation": "has subtype",
+      "target": "type2_diabetes",
+      "source_id": "lc_type2_diabetes",
+      "evidence": "Long Chau has a dedicated public page explaining type 2 diabetes."
+    },
+    {
+      "source": "diabetes",
+      "relation": "has topic",
+      "target": "symptoms",
+      "source_id": "lc_diabetes_overview",
+      "evidence": "The overview page explicitly covers diabetes symptoms."
+    },
+    {
+      "source": "diabetes",
+      "relation": "has topic",
+      "target": "causes_risk_factors",
+      "source_id": "lc_diabetes_overview",
+      "evidence": "The overview page explicitly covers causes."
+    },
+    {
+      "source": "diabetes",
+      "relation": "is evaluated by",
+      "target": "diagnosis",
+      "source_id": "lc_diabetes_overview",
+      "evidence": "The overview page explicitly covers diagnosis."
+    },
+    {
+      "source": "diabetes",
+      "relation": "has management topic",
+      "target": "treatment",
+      "source_id": "lc_treatment",
+      "evidence": "The treatment article discusses diabetes treatment approaches."
+    },
+    {
+      "source": "diabetes",
+      "relation": "may lead to",
+      "target": "complications",
+      "source_id": "lc_complications",
+      "evidence": "The complications article discusses diabetes complications."
+    },
+    {
+      "source": "diabetes",
+      "relation": "has product category",
+      "target": "diabetes_medicines",
+      "source_id": "lc_medicines",
+      "evidence": "Long Chau publishes a category page for diabetes medicines."
+    },
+    {
+      "source": "long_chau",
+      "relation": "publishes information about",
+      "target": "diabetes",
+      "source_id": "lc_diabetes_overview",
+      "evidence": "The page is hosted on the Long Chau domain."
+    },
+    {
+      "source": "long_chau",
+      "relation": "lists products in",
+      "target": "diabetes_medicines",
+      "source_id": "lc_medicines",
+      "evidence": "The diabetes-medicine category is hosted on the Long Chau domain."
+    }
+  ]
+}
